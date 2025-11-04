@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/skodr7/weather_react.git/static/css/main.88abc3fe.css",
+    "main.js": "/skodr7/weather_react.git/static/js/main.cbb675a0.js",
+    "static/js/453.13e4864a.chunk.js": "/skodr7/weather_react.git/static/js/453.13e4864a.chunk.js",
+    "static/js/38.22267a89.chunk.js": "/skodr7/weather_react.git/static/js/38.22267a89.chunk.js",
+    "static/media/IBMPlexSansArabic-Medium.ttf": "/skodr7/weather_react.git/static/media/IBMPlexSansArabic-Medium.1a40339d13ec504fe8b9.ttf",
+    "static/media/IBMPlexSansArabic-Light.ttf": "/skodr7/weather_react.git/static/media/IBMPlexSansArabic-Light.a14e6a6c8c5f758ae965.ttf",
+    "static/media/IBMPlexSansArabic-Regular.ttf": "/skodr7/weather_react.git/static/media/IBMPlexSansArabic-Regular.bd211734243840c34ad3.ttf",
+    "index.html": "/skodr7/weather_react.git/index.html",
+    "main.88abc3fe.css.map": "/skodr7/weather_react.git/static/css/main.88abc3fe.css.map",
+    "main.cbb675a0.js.map": "/skodr7/weather_react.git/static/js/main.cbb675a0.js.map",
+    "453.13e4864a.chunk.js.map": "/skodr7/weather_react.git/static/js/453.13e4864a.chunk.js.map",
+    "38.22267a89.chunk.js.map": "/skodr7/weather_react.git/static/js/38.22267a89.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88abc3fe.css",
+    "static/js/main.cbb675a0.js"
+  ]
+}
