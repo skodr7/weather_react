@@ -8,12 +8,18 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import CloudIcon from "@mui/icons-material/Cloud";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // external
 import axios from "axios";
 import moment from "moment/moment";
 import "moment/min/locales";
 import { useTranslation } from "react-i18next";
+
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { changeResult } from "./weatherApiSlice";
+import { fetchWeather } from "./weatherApiSlice";
 
 const theme = createTheme({
   typography: {
@@ -25,19 +31,33 @@ const theme = createTheme({
 let cancelAxios = null;
 
 function App() {
+  // redux
+  const dispatch = useDispatch();
+
+  // //122
+  const isLoading = useSelector((state) => {
+    console.log("===============", state);
+    return state.weather.isLoading;
+  });
+
+  // //123
+  const temp = useSelector((state) => {
+    return state.weather.weather;
+  });
+
   const { t, i18n } = useTranslation();
 
   // =========== state
   const [date, setDate] = useState("");
 
   // // // 102
-  const [temp, setTemp] = useState({
-    number: null,
-    des: "",
-    min: null,
-    max: null,
-    icon: null,
-  });
+  // const [temp, setTemp] = useState({
+  //   number: null,
+  //   des: "",
+  //   min: null,
+  //   max: null,
+  //   icon: null,
+  // });
   const [local, setLocal] = useState("ar");
 
   // // // 108
@@ -58,8 +78,12 @@ function App() {
   }
 
   useEffect(() => {
-    i18n.changeLanguage(local);
+    //// trying redux 120
+    // dispatch(changeResult());
+    console.log("dispatching fetch weather from the componenttttttt");
+    dispatch(fetchWeather());
 
+    i18n.changeLanguage(local);
   }, []);
 
   useEffect(() => {
@@ -67,41 +91,41 @@ function App() {
     setDate(moment().format("MMMM Do YYYY, h:mm:ss a"));
 
     // Make a request for a user with a given ID
-    axios
-      .get(
-        "https://api.openweathermap.org/data/2.5/weather?lat=13.96667&lon=44.18333&appid=2fd84d744d345aa9ca383c449ebb21d9",
-        {
-          cancelToken: new axios.CancelToken((c) => {
-            cancelAxios = c;
-          }),
-        }
-      )
-      .then(function (response) {
-        // handle success
-        const reqTemp = Math.round(response.data.main.temp - 272.15);
-        const min = Math.round(response.data.main.temp_min - 272.15);
-        const max = Math.round(response.data.main.temp_max - 272.15);
-        const des = response.data.weather[0].description;
-        const icon = response.data.weather[0].icon;
+    // axios
+    //   .get(
+    //     "https://api.openweathermap.org/data/2.5/weather?lat=13.96667&lon=44.18333&appid=2fd84d744d345aa9ca383c449ebb21d9",
+    //     {
+    //       cancelToken: new axios.CancelToken((c) => {
+    //         cancelAxios = c;
+    //       }),
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     // handle success
+    //     const reqTemp = Math.round(response.data.main.temp - 272.15);
+    //     const min = Math.round(response.data.main.temp_min - 272.15);
+    //     const max = Math.round(response.data.main.temp_max - 272.15);
+    //     const des = response.data.weather[0].description;
+    //     const icon = response.data.weather[0].icon;
 
-        setTemp({
-          number: reqTemp,
-          min: min,
-          max: max,
-          des: des,
-          icon: `https://openweathermap.org/img/wn/${icon}@2x.png`,
-        });
-        console.log(response, icon);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    //     setTemp({
+    //       number: reqTemp,
+    //       min: min,
+    //       max: max,
+    //       des: des,
+    //       icon: `https://openweathermap.org/img/wn/${icon}@2x.png`,
+    //     });
+    //     console.log(response, icon);
+    //   })
+    //   .catch(function (error) {
+    //     // handle error
+    //     console.log(error);
+    //   });
 
-    return () => {
-      console.log("canceling");
-      cancelAxios();
-    };
+    // return () => {
+    //   console.log("canceling");
+    //   cancelAxios();
+    // };
   }, []);
 
   return (
@@ -173,6 +197,16 @@ function App() {
                         alignItems: "center",
                       }}
                     >
+                      {/* 122 */}
+                      {isLoading ? (
+                        <CircularProgress
+                          aria-label="Loading…"
+                          style={{ color: "white" }}
+                        />
+                      ) : (
+                        ""
+                      )}
+
                       <Typography variant="h1" style={{ textAlign: "right" }}>
                         {temp.number}
                       </Typography>
@@ -191,9 +225,13 @@ function App() {
                         alignItems: "center",
                       }}
                     >
-                      <h5>{temp.min} :{t("min")}</h5>
+                      <h5>
+                        {temp.min} :{t("min")}
+                      </h5>
                       <h5 style={{ margin: "0px 5px" }}>|</h5>
-                      <h5>{temp.max} :{t("max")}</h5>
+                      <h5>
+                        {temp.max} :{t("max")}
+                      </h5>
                     </div>
                     {/* min & max */}
                   </div>
@@ -222,7 +260,11 @@ function App() {
                 marginTop: "20px",
               }}
             >
-              <Button style={{ color: "white" }} variant="text" onClick={hanedelLang}>
+              <Button
+                style={{ color: "white" }}
+                variant="text"
+                onClick={hanedelLang}
+              >
                 {local == "en" ? "Arabic" : "إنحليزي"}
               </Button>
             </div>
@@ -241,3 +283,4 @@ export default App;
 // 101 = req to ibb = https://api.openweathermap.org/data/2.5/weather?lat=13.96667&lon=44.18333&appid=2fd84d744d345aa9ca383c449ebb21d9
 //108
 //109
+//123
